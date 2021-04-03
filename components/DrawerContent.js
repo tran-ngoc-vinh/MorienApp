@@ -18,11 +18,12 @@ import {
     DrawerItem
   } from '@react-navigation/drawer'
 
-import { createStackNavigator } from '@react-navigation/stack';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-const Stack = createStackNavigator();
+import {AuthContext} from '../screen/context';
+
+
 export function DrawerContent(props) {
+    const{signOut} =React.useContext(AuthContext);
       return(
       
         <View style={{flex:1}}>
@@ -63,14 +64,15 @@ export function DrawerContent(props) {
                     size={size}
                     />
                 )} label="ログアウト"
-                onPress={() =>{}}
+                onPress={() =>{signOut}}
                 />
             </Drawer.Section>
         </View>
   
       );
   }
-  
+ 
+
 
   const Styles = StyleSheet.create({
     drawerContent: {
