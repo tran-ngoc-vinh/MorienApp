@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React from 'react';
 import { 
     View, 
@@ -15,6 +16,20 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 
 const SplashScreen = ({navigation}) => {
+  
+  const func = async() => {
+    try {
+      const jsonValue = AsyncStorage.getItem('user').then(value => {
+        console.log(value);
+        let userInfo = JSON.parse(value)
+        if (userInfo.login_hash) {
+          navigation.navigate('HomeNavigation');
+        } else {
+          navigation.navigate('LoginScreen');
+        }
+      });
+    } catch (e) {}
+  };
     return (
         <View style={styles.container}>
             <View style={styles.up}>
@@ -33,7 +48,7 @@ const SplashScreen = ({navigation}) => {
                 <Text style ={styles.title}>iasdfh</Text>
                 <Text style ={styles.Text}>Sing in with account</Text>
                 <View style={styles.button}>
-                <TouchableOpacity onPress={()=>navigation.navigate('LoginScreen')}>
+                <TouchableOpacity onPress={func}>
                     <LinearGradient
                     colors={['#08d4c4','#01ab9d']} style={styles.signIn}
                     >
@@ -51,6 +66,7 @@ const SplashScreen = ({navigation}) => {
     )
 }
 export default SplashScreen;
+
 const {height} = Dimensions.get("screen");
 const height_logo = height * 0.3;
 

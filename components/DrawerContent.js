@@ -23,7 +23,7 @@ import {AuthContext} from '../screen/context';
 
 
 export function DrawerContent(props) {
-    const{signOut} =React.useContext(AuthContext);
+    
       return(
       
         <View style={{flex:1}}>
@@ -64,7 +64,7 @@ export function DrawerContent(props) {
                     size={size}
                     />
                 )} label="ログアウト"
-                onPress={() =>{signOut}}
+                onPress={() =>{props.navigation.navigate('SplashScreen')}}
                 />
             </Drawer.Section>
         </View>

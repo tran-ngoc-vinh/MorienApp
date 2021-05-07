@@ -18,8 +18,9 @@
    TouchableOpacity,
    Alert,
  } from 'react-native';
- import Styles from '../theme/StyleLogin'
- import ReceptionScreen from './ReceptionScreen'
+  import Styles from '../theme/StyleLogin';
+  import AsyncStorage from '@react-native-community/async-storage';
+  
  export default class LoginScreen extends Component {
  
      constructor(props){
@@ -27,38 +28,57 @@
          this.state={
            login_id:"",
            password:"",
+           error:"",
          }
  
      }
- 
-   fnLogin = () => {
-     
+   fnLogin = async() => {
      let details = {
       'login_id': this.state.login_id,
       'password': this.state.password,
-  };
+      };
 
-  let formBody = [];
-  for (let property in details) {
-      let encodedKey = encodeURIComponent(property);
-      let encodedValue = encodeURIComponent(details[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-  }
-  formBody = formBody.join("&");
+      let formBody = [];
+      for (let property in details) {
+          let encodedKey = encodeURIComponent(property);
+          let encodedValue = encodeURIComponent(details[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+      }
+      formBody = formBody.join("&");
 
-  fetch('http://3.115.79.185/morien/api/Logins', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: formBody
-  }).then((response) => response.json())
-      .then((responseData) => {
-        alert(responseData);
-          console.log(responseData);
-        
+      let responses = await fetch('http://3.115.79.185/morien/api/Logins', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formBody,
       })
-      .done();
+        .then(response => response.json())
+        .then(responseData => {
+          if (responseData.error_code != '00') {
+            alert('Invalid credentials');
+            return;
+          }
+
+          try {
+            let userInfo = JSON.stringify({
+              login_hash: responseData.login_hash,
+              user_id: responseData.user_id,
+            });
+
+            AsyncStorage.setItem('user', userInfo).then(() => {
+              //goto gamen
+              this.props.navigation.navigate('HomeNavigation');
+              // AsyncStorage.getItem('user').then((value) => {
+              //   console.log(value);
+              // })
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        })
+        .done();
+        
    };
  
    render() {
@@ -105,4 +125,5 @@
      );
    }
  }
+ 
  

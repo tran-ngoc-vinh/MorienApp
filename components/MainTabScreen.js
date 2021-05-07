@@ -6,6 +6,10 @@ import ReceptionScreen from './ReceptionScreen';
 import OderScreen from './OderScreen';
 import ProductListScreen from './ProductListScreen';
 import SiteListScreen from './SiteListScreen';
+import GoodListScreen from './GoodListScreen';
+import SiteListViewScreen from './SiteListViewScreen';
+import MapsScreen from './MapsScreen';
+import CartView from './CartView';
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -58,6 +62,7 @@ const MainTabScreen = () => (
     </Tab.Navigator>
 );
 export default MainTabScreen;
+
 const ReceptionStack = createStackNavigator()
 const ReceptionStackScreen =({navigation})=>(
   <ReceptionStack.Navigator screenOptions={{
@@ -69,8 +74,11 @@ const ReceptionStackScreen =({navigation})=>(
     headerLeft: () => (
       <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
   ),
-  headerRight: ()=>(<Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> alert('this is a button')} /> ),
+    headerRight: ()=>(<Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> {navigation.navigate('CartView')}} /> ),
   }} />
+    <ReceptionStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center',
+  }} />
+  
   </ReceptionStack.Navigator>
 )
 
@@ -85,8 +93,9 @@ const OderStackScreen =({navigation})=>(
          headerLeft: () => (
           <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
       ),
-      headerRight: ()=>(<Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> alert('this is a button')} /> ),
+      headerRight: ()=>(<Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> {navigation.navigate('CartView')}} /> ),
       }} />
+      <OderStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center'}} />
   </OderStack.Navigator>
 )
 
@@ -97,14 +106,18 @@ const ProductListStackScreen =({navigation})=>(
     headerTintColor:'#fff',
     headerTitleStyle:{fontWeight:'bold'}
   }}>
-    <ProductListStack.Screen name="Oder" component={ProductListScreen} options={{title:'MORIEN',headerTitleAlign:'center',
+    <ProductListStack.Screen name="ProductList" component={ProductListScreen} options={{title:'MORIEN',headerTitleAlign:'center',
          headerLeft: () => (
-          <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
+          <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()} />
         ),
           headerRight: ()=>(
-          <Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> alert('this is a button')} /> 
+          <Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> {navigation.navigate('CartView')}} /> 
         ),
       }} />
+       <ProductListStack.Screen name="GoodListScreen"component={GoodListScreen} options={{ title: ' ',headerRight: ()=>(<Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> {navigation.navigate('CartView')}} /> 
+      ),
+      }} />
+      <ProductListStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center'}} />
       
   </ProductListStack.Navigator>
 )
@@ -116,12 +129,15 @@ const SiteListStackScreen =({navigation})=>(
     headerTintColor:'#fff',
     headerTitleStyle:{fontWeight:'bold'}
   }}>
-    <SiteListStack.Screen name="Oder" component={SiteListScreen} options={{title:'MORIEN',headerTitleAlign:'center',
+    <SiteListStack.Screen name="SiteList" component={SiteListScreen} options={{title:'MORIEN',headerTitleAlign:'center',
          headerLeft: () => (
           <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
       ),
         headerRight: ()=>(<Icon.Button name="add-outline" size={30} backgroundColor="#009387" onPress={()=> alert('add button')} /> 
       ),
   }} />
+    <SiteListStack.Screen name="CartView" component={CartView} />
+    <SiteListStack.Screen name="SiteListViewScreen" component={SiteListViewScreen} options={{title:' '}}/>
+    <SiteListStack.Screen name="MapsScreen" component={MapsScreen} options={{title:' '}}/>
   </SiteListStack.Navigator>
 )
