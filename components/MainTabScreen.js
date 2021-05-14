@@ -8,7 +8,6 @@ import ProductListScreen from './ProductListScreen';
 import SiteListScreen from './SiteListScreen';
 import GoodListScreen from './GoodListScreen';
 import SiteListViewScreen from './SiteListViewScreen';
-import MapsScreen from './MapsScreen';
 import CartView from './CartView';
 
 
@@ -138,6 +137,6 @@ const SiteListStackScreen =({navigation})=>(
   }} />
     <SiteListStack.Screen name="CartView" component={CartView} />
     <SiteListStack.Screen name="SiteListViewScreen" component={SiteListViewScreen} options={{title:' '}}/>
-    <SiteListStack.Screen name="MapsScreen" component={MapsScreen} options={{title:' '}}/>
+   
   </SiteListStack.Navigator>
 )

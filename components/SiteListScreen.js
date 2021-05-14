@@ -2,11 +2,9 @@ import React,{Component} from 'react';
 import{
     View,Text,StyleSheet,TextInput, TouchableOpacity, Button
 } from 'react-native';
-import { Input } from 'react-native-elements/dist/input/Input';
+
 import { FlatList } from 'react-native-gesture-handler';
 import { ActivityIndicator } from 'react-native-paper';
-import { Item } from 'react-native-paper/lib/typescript/components/List/List';
-import { Header } from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class ProductListScreen extends React.Component { 
@@ -18,10 +16,12 @@ export default class ProductListScreen extends React.Component {
             data:[],
         }
     }
+
     renderItem=({item})=>{
         return(
             <TouchableOpacity style={{flex:1,flexDirection:'row',marginBottom:3}} onPress={()=>{
                 this.props.navigation.navigate('SiteListViewScreen',item);
+               
             }}>         
                 <View>
                         <Text style={{fontSize:14,color:'#333333',marginBottom:10,marginTop:5}}>{item.SiteName}</Text>

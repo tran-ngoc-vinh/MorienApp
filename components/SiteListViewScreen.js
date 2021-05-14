@@ -1,11 +1,48 @@
 import React from 'react';
 import{
-    View,Text, TouchableOpacity
+    View,Text, TouchableOpacity,Button
 } from 'react-native';
-import MapsScreen from './MapsScreen'
+import getDirections from 'react-native-google-maps-directions';
+import Geocoder from 'react-native-geocoding';
+import { GOOGLE_MAP_KEY} from './MAPS/googleMapKey';
 
 export default class SiteListViewScreen extends React.Component { 
-    state={ }
+
+    handleGetDirections = () => {
+
+    let site = this.props.route.params
+        Geocoder.init(GOOGLE_MAP_KEY);
+        Geocoder.from(site.PostalCode,site.AddressPrefecture,site.AddressCity,site.AddressNumber)
+        .then(json => {
+          var location = json.results[0].geometry.location;
+          
+          {
+
+            const data = {
+              destination: {
+                latitude: location.lat,
+                longitude:location.lng
+              },
+              params: [
+                {
+                  key: "travelmode",
+                  value: "driving"        // may be "walking", "bicycling" or "transit" as well
+                },
+                {
+                  key: "dir_action",
+                  value: "navigate"       // this instantly initializes navigation using the given travel mode
+                }
+              ],
+              
+            }
+         
+            getDirections(data)
+          }       
+        })
+        .catch(error => console.warn(error));
+        }
+        
+        
     render(){
         let site =this.props.route.params;
         return(
@@ -40,7 +77,7 @@ export default class SiteListViewScreen extends React.Component {
                     <Text></Text>
                 </View>
                 <View style={{alignItems:"center"}}>
-                    <TouchableOpacity style={{backgroundColor:'#4CAF50',width:250,alignItems:"center",borderRadius:10}} onPress={()=>{this.props.navigation.navigate('MapsScreen')}}>
+                    <TouchableOpacity style={{backgroundColor:'#4CAF50',width:250,alignItems:"center",borderRadius:10}} onPress={()=>{this.handleGetDirections()}}>
                             <View>
                                 <Text style={{color:'white',fontSize:20}}>GoogleMapで確認する</Text>
                             </View>
@@ -50,4 +87,3 @@ export default class SiteListViewScreen extends React.Component {
         )
     }
 }
-

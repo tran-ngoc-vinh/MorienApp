@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { 
     View, Text, TouchableOpacity, ScrollView, 
-    Dimensions, StyleSheet, Image 
+    Dimensions, StyleSheet, Image ,FlatList
 } from 'react-native';
 
 import { Item } from 'react-native-paper/lib/typescript/components/List/List';
@@ -25,6 +25,9 @@ class CartView extends Component {
         return (
             <View style={wrapper}>
                 <ScrollView style={main}>
+                    <TouchableOpacity style={checkoutButton} onPress>
+                        <Text style={checkoutTitle}>注文に進む</Text>
+                    </TouchableOpacity> 
                     <View style={product}>
                         <Image source={sp1} style={productImage} />
                         <View style={[mainRight]}>
@@ -130,9 +133,6 @@ class CartView extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                <TouchableOpacity style={checkoutButton}>
-                    <Text style={checkoutTitle}>TOTAL {1000}$ CHECKOUT NOW</Text>
-                </TouchableOpacity>
             </View>
         );
     }
@@ -154,7 +154,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#2ABB9C',
         borderRadius: 2,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop:25
+
     },
     main: {
         width, backgroundColor: '#DFDFDF'
