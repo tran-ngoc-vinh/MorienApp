@@ -6,9 +6,6 @@ import {
     TouchableOpacity, 
     Dimensions,
     StyleSheet,
-    StatusBar,
-    Image,
-    Button
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
@@ -45,7 +42,7 @@ const SplashScreen = ({navigation}) => {
                 style={styles.footer}
                 animation="fadeInUpBig"
                 >
-                <Text style ={styles.title}>iasdfh</Text>
+                <Text style ={styles.title}>MORIEN</Text>
                 <Text style ={styles.Text}>Sing in with account</Text>
                 <View style={styles.button}>
                 <TouchableOpacity onPress={func}>

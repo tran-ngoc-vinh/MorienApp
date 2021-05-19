@@ -1,215 +1,133 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { 
-    View, Text, TouchableOpacity, ScrollView, 
-    Dimensions, StyleSheet, Image ,FlatList
+    View, Text, TouchableOpacity, ScrollView,StyleSheet ,RefreshControl,Dimensions,ActivityIndicator,button
 } from 'react-native';
+var { width } = Dimensions.get("window")
+import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-import { Item } from 'react-native-paper/lib/typescript/components/List/List';
-
-import sp1 from '../images/fb.jpeg';
-
-function toTitleCase(str) {
-    return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-}
-
-class CartView extends Component {
-    gotoDetail() {
-        const { navigator } = this.props;
-        navigator.push({ name: 'PRODUCT_DETAIL' });
+export default class CartView extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataCart:[],       
+        }
     }
+    
+    componentDidMount()
+    {
+      AsyncStorage.getItem('cart').then((cart)=>{
+        if (cart !== null) {
+          // We have data!!
+          const cartmorien = JSON.parse(cart)
+          this.setState({dataCart:cartmorien})
+        }
+        console.log(cart)
+      })
+      .catch((err)=>{
+        alert(err)
+      })
+    }
+
+    removeCartItem = async (index) => {
+        try {
+            const cart = await AsyncStorage.getItem('cart');
+            let cartItems = JSON.parse(cart);
+            const updatedCartItems = cartItems.filter(function (e, itemIndex) { return itemIndex !== index });
+    
+            await AsyncStorage.setItem('cart', JSON.stringify(updatedCartItems));
+            await AsyncStorage.mergeItem('cart', JSON.stringify(updatedCartItems));     
+
+        } catch (error) {
+            console.log('error: ', error);
+        }   
+        
+    };
+
+    onChangeQuat(i,type)
+    {
+        const cart = this.state.dataCart
+        let cant =  cart[i].quantity;
+        if(type) {
+            cant = cant + 1
+            cart[i].quantity = cant
+            this.setState({dataCart:cart})
+            
+        }
+        else if (type==false&&cant>=2) {
+            cant = cant - 1
+            cart[i].quantity = cant
+            this.setState({dataCart:cart})
+
+        }
+        else if(type==false&&cant==1){
+            cart.splice(i,1)
+            this.setState({dataCart:cart})
+        }
+        
+        else{
+
+        }
+    }
+
     render() {
-        const { main, checkoutButton, checkoutTitle, wrapper,
-        product, mainRight, productController,
-            txtName, txtPrice, productImage, numberOfProduct, 
-            } = styles;
         return (
-            <View style={wrapper}>
-                <ScrollView style={main}>
-                    <TouchableOpacity style={checkoutButton} onPress>
-                        <Text style={checkoutTitle}>注文に進む</Text>
+            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <View style={{height:20}} />
+                <View style={{height:10}}/>
+
+                <View style={{backgroundColor:'transparent',flex:1,justifyContent:'space-between'}}>
+                    <ScrollView>
+                    {
+                        this.state.dataCart.map((item,i)=>{
+
+                            return(                             
+                                <View style={{width:width-40,flex:1}}>
+                                    <View style={{width:width-20,margin:10,backgroundColor:'transparent', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}}>
+                                        <Text style={{fontSize:14,fontWeight:'bold'}}>{item.goods.GoodsName}</Text>
+                                        <Text>Size : {item.goods.Size}</Text>
+                                        <View style={{flexDirection:'row',alignItems:'center'}}>
+                                            <TouchableOpacity onPress={()=>this.onChangeQuat(i,false)}>
+                                            <Icon name="ios-remove-circle" size={30} color={"#33c37d"} />
+                                            </TouchableOpacity>
+
+                                            <Text style={{fontWeight:'bold',paddingHorizontal:10}}>{item.quantity}</Text>
+
+                                            <TouchableOpacity  onPress={()=>this.onChangeQuat(i,true)} >
+                                            <Icon name="ios-add-circle" size={30} color={"#33c37d"} />
+                                            </TouchableOpacity>
+                                              
+                                            <View>                                           
+                                            <TouchableOpacity  onPress={()=>this.removeCartItem(i)} > 
+                                            <Icon name="trash" size={30} color={"#D05A0B"} style={{marginLeft:100}} />
+                                            </TouchableOpacity>
+                                            </View>                                        
+                                        </View>
+                                    </View> 
+                                </View>
+                            )
+                        })
+                    }
+                    </ScrollView>
+                    
+                </View>
+                <View style={{height:20}}/>    
+                    <TouchableOpacity style={{
+                        backgroundColor:"#33c37d",
+                        width:width-40,
+                        alignItems:'center',
+                        padding:10,
+                        borderRadius:5
+                    }}>
+                    <Text style={{
+                        fontSize:24,
+                        fontWeight:'bold',
+                        color:"white",
+                    }}>注文に進む</Text>  
                     </TouchableOpacity> 
-                    <View style={product}>
-                        <Image source={sp1} style={productImage} />
-                        <View style={[mainRight]}>
-                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                <Text style={txtName}>{toTitleCase('Ten San Pham')}</Text>
-                                <TouchableOpacity>
-                                    <Text style={{ fontFamily: 'Avenir', color: '#969696' }}>X</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View>
-                                <Text style={txtPrice}>サイズ：</Text>
-                            </View>
-                            <View style={productController}>
-                                <View style={numberOfProduct}>
-                                    <TouchableOpacity>
-                                        <Text style={{fontFamily:'Avenir',color:'black',fontSize:20,}}>+</Text>
-                                    </TouchableOpacity>
-                                    <Text style={{fontFamily:'Avenir',color:'black',fontSize:20,}}>{3}</Text>
-                                    <TouchableOpacity>
-                                        <Text style={{fontFamily:'Avenir',color:'black',fontSize:20,}}>-</Text>
-                                    </TouchableOpacity>
-                                </View>
-                               
-                            </View>
-                        </View>
-                    </View>
-                    <View style={product}>
-                        <Image source={sp1} style={productImage} />
-                        <View style={[mainRight]}>
-                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                <Text style={txtName}>{toTitleCase('black of the')}</Text>
-                                <TouchableOpacity>
-                                    <Text style={{ fontFamily: 'Avenir', color: '#969696' }}>X</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View>
-                                <Text style={txtPrice}>{100}$</Text>
-                            </View>
-                            <View style={productController}>
-                                <View style={numberOfProduct}>
-                                    <TouchableOpacity>
-                                        <Text>+</Text>
-                                    </TouchableOpacity>
-                                    <Text>{3}</Text>
-                                    <TouchableOpacity>
-                                        <Text>-</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                
-                            </View>
-                        </View>
-                    </View>
-                    <View style={product}>
-                        <Image source={sp1} style={productImage} />
-                        <View style={[mainRight]}>
-                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                <Text style={txtName}>{toTitleCase('black of the')}</Text>
-                                <TouchableOpacity>
-                                    <Text style={{ fontFamily: 'Avenir', color: '#969696' }}>X</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View>
-                                <Text style={txtPrice}>{100}$</Text>
-                            </View>
-                            <View style={productController}>
-                                <View style={numberOfProduct}>
-                                    <TouchableOpacity>
-                                        <Text>+</Text>
-                                    </TouchableOpacity>
-                                    <Text>{3}</Text>
-                                    <TouchableOpacity>
-                                        <Text>-</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                
-                            </View>
-                        </View>
-                    </View>
-                    <View style={product}>
-                        <Image source={sp1} style={productImage} />
-                        <View style={[mainRight]}>
-                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                <Text style={txtName}>{toTitleCase('black of the')}</Text>
-                                <TouchableOpacity>
-                                    <Text style={{ fontFamily: 'Avenir', color: '#969696' }}>X</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View>
-                                <Text style={txtPrice}>{100}$</Text>
-                            </View>
-                            <View style={productController}>
-                                <View style={numberOfProduct}>
-                                    <TouchableOpacity>
-                                        <Text>+</Text>
-                                    </TouchableOpacity>
-                                    <Text>{3}</Text>
-                                    <TouchableOpacity>
-                                        <Text>-</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            
-                            </View>
-                        </View>
-                    </View>
-                </ScrollView>
+                <View style={{height:10}} />             
             </View>
         );
     }
+    
 }
-
-const { width } = Dimensions.get('window');
-const imageWidth = width / 4;
-const imageHeight = (imageWidth * 452) / 361;
-
-const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1,
-        backgroundColor: '#DFDFDF'
-    },
-    checkoutButton: {
-        height: 50,
-        margin: 10,
-        marginTop: 0,
-        backgroundColor: '#2ABB9C',
-        borderRadius: 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop:25
-
-    },
-    main: {
-        width, backgroundColor: '#DFDFDF'
-    },
-    checkoutTitle: {
-        color: '#FFF',
-        fontSize: 15,
-        fontWeight: 'bold',
-        fontFamily: 'Avenir'
-    },
-    product: {
-        flexDirection: 'row',
-        margin: 10,
-        padding: 10,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 2,
-        shadowColor: '#3B5458',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.2
-    },
-    productImage: {
-        width: imageWidth,
-        height: imageHeight,
-        flex: 1,
-        resizeMode: 'center'
-    },
-    mainRight: {
-        flex: 3,
-        justifyContent: 'space-between'
-    },
-    productController: {
-        flexDirection: 'row'
-    },
-    numberOfProduct: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around'
-    },
-    txtName: {
-        paddingLeft: 20,
-        color: '#A7A7A7',
-        fontSize: 20,
-        fontWeight: '400',
-        fontFamily: 'Avenir'
-    },
-    txtPrice: {
-        paddingLeft: 20,
-        color: '#C21C70',
-        fontSize: 20,
-        fontWeight: '400',
-        fontFamily: 'Avenir'
-    },
-
-});
-
-export default CartView;
