@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import { 
-    View, Text, TouchableOpacity, ScrollView,StyleSheet ,RefreshControl,Dimensions,ActivityIndicator,button
+    View, Text, TouchableOpacity, ScrollView,Dimensions,
 } from 'react-native';
 var { width } = Dimensions.get("window")
 import AsyncStorage from '@react-native-community/async-storage';
@@ -10,8 +10,8 @@ export default class CartView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataCart:[],       
-        }
+            dataCart:[],    
+        };
     }
     
     componentDidMount()
@@ -36,42 +36,43 @@ export default class CartView extends Component {
             const updatedCartItems = cartItems.filter(function (e, itemIndex) { return itemIndex !== index });
     
             await AsyncStorage.setItem('cart', JSON.stringify(updatedCartItems));
-            await AsyncStorage.mergeItem('cart', JSON.stringify(updatedCartItems));     
-
+            await AsyncStorage.mergeItem('cart', JSON.stringify(updatedCartItems));
+    
         } catch (error) {
             console.log('error: ', error);
-        }   
-        
+        }
+        // this.setState({dataCart:cart});
     };
 
-    onChangeQuat(i,type)
-    {
+    onChangeQuat(i, type){
         const cart = this.state.dataCart
-        let cant =  cart[i].quantity;
-        if(type) {
+        let cant = cart[i].quantity;
+
+        if(type){
             cant = cant + 1
             cart[i].quantity = cant
-            this.setState({dataCart:cart})
-            
+            this.setState({
+                dataCart:cart
+            })
         }
-        else if (type==false&&cant>=2) {
-            cant = cant - 1
+        else if (type == false&&cant>=2){
+            cant = cant -1
             cart[i].quantity = cant
-            this.setState({dataCart:cart})
-
+            this.setState({
+                dataCart:cart
+            })
         }
-        else if(type==false&&cant==1){
+        else if (type==false&&cant==1){
             cart.splice(i,1)
-            this.setState({dataCart:cart})
-        }
-        
-        else{
-
+            this.setState({
+                dataCart:cart
+            })
         }
     }
 
     render() {
         return (
+           
             <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                 <View style={{height:20}} />
                 <View style={{height:10}}/>
@@ -81,9 +82,11 @@ export default class CartView extends Component {
                     {
                         this.state.dataCart.map((item,i)=>{
 
-                            return(                             
-                                <View style={{width:width-40,flex:1}}>
+                            return(  
+                                                 
+                                <View key={i} style={{width:width-40,flex:1}}>
                                     <View style={{width:width-20,margin:10,backgroundColor:'transparent', borderBottomWidth:2, borderColor:"#cccccc", paddingBottom:10}}>
+                                        
                                         <Text style={{fontSize:14,fontWeight:'bold'}}>{item.goods.GoodsName}</Text>
                                         <Text>Size : {item.goods.Size}</Text>
                                         <View style={{flexDirection:'row',alignItems:'center'}}>
@@ -93,7 +96,7 @@ export default class CartView extends Component {
 
                                             <Text style={{fontWeight:'bold',paddingHorizontal:10}}>{item.quantity}</Text>
 
-                                            <TouchableOpacity  onPress={()=>this.onChangeQuat(i,true)} >
+                                            <TouchableOpacity onPress={()=>this.onChangeQuat(i,true)} >
                                             <Icon name="ios-add-circle" size={30} color={"#33c37d"} />
                                             </TouchableOpacity>
                                               
@@ -105,11 +108,11 @@ export default class CartView extends Component {
                                         </View>
                                     </View> 
                                 </View>
+                                
                             )
                         })
                     }
                     </ScrollView>
-                    
                 </View>
                 <View style={{height:20}}/>    
                     <TouchableOpacity style={{
@@ -127,6 +130,7 @@ export default class CartView extends Component {
                     </TouchableOpacity> 
                 <View style={{height:10}} />             
             </View>
+            
         );
     }
     

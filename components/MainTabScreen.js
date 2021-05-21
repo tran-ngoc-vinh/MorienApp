@@ -75,8 +75,7 @@ const ReceptionStackScreen =({navigation})=>(
   ),
     headerRight: ()=>(<Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> {navigation.navigate('CartView')}} /> ),
   }} />
-    <ReceptionStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center',
-  }} />
+    {/* <ReceptionStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center'}} /> */}
   
   </ReceptionStack.Navigator>
 )
@@ -94,7 +93,7 @@ const OderStackScreen =({navigation})=>(
       ),
       headerRight: ()=>(<Icon.Button name="cart-outline" size={30} backgroundColor="#009387" onPress={()=> {navigation.navigate('CartView')}} /> ),
       }} />
-      <OderStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center'}} />
+      {/* <OderStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center'}} /> */}
   </OderStack.Navigator>
 )
 
@@ -135,7 +134,7 @@ const SiteListStackScreen =({navigation})=>(
         headerRight: ()=>(<Icon.Button name="add-outline" size={30} backgroundColor="#009387" onPress={()=> alert('add button')} /> 
       ),
   }} />
-    <SiteListStack.Screen name="CartView" component={CartView} />
+    {/* <SiteListStack.Screen name="CartView" component={CartView} /> */}
     <SiteListStack.Screen name="SiteListViewScreen" component={SiteListViewScreen} options={{title:' '}}/>
    
   </SiteListStack.Navigator>

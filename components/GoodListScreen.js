@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 export default class GoodListScreen extends Component { 
-   
+    state={}
     render(){
         let item =this.props.route.params;
         return(
@@ -31,16 +31,18 @@ export default class GoodListScreen extends Component {
             size:data.Size
         }
 
-        AsyncStorage.getItem("cart").then((datacart)=>{
+        AsyncStorage.getItem('cart').then((datacart)=>{
+
             if(datacart!==null){
+
                 const cart = JSON.parse(datacart)
                 cart.push(itemcart)
-                AsyncStorage.setItem("cart",JSON.stringify(cart))
+                AsyncStorage.setItem('cart',JSON.stringify(cart))
             }
             else{
                 const cart = []
                 cart.push(itemcart)
-                AsyncStorage.setItem('cart',JSON.stringify(cart));
+                AsyncStorage.setItem('cart',JSON.stringify([data]));
             }
             alert("カートに入れる")
         })
