@@ -10,8 +10,7 @@ export default class CartView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataCart:[],   
-            quantity:0,
+            dataCart:[],  
         };
     }
     
@@ -23,22 +22,21 @@ export default class CartView extends Component {
           const cartmorien = JSON.parse(cart)
           this.setState({dataCart:cartmorien})
         }
-        console.log(cart)
       })
       .catch((err)=>{
         alert(err)
       })
     }
 
-
     removeCartItem = async (index) => {
         try {
             const cart = await AsyncStorage.getItem('cart');
             let cartItems = JSON.parse(cart);
             const updatedCartItems = cartItems.filter(function (e, itemIndex) { return itemIndex !== index });
-    
+            
             await AsyncStorage.setItem('cart', JSON.stringify(updatedCartItems));
             // await AsyncStorage.mergeItem('cart', JSON.stringify(updatedCartItems));
+            
     
         } catch (error) {
             console.log('error: ', error);
@@ -53,14 +51,14 @@ export default class CartView extends Component {
         if(type){
             cant = cant + 1
             cart[i].quantity = cant
-            // this.removeCartItem(cant+1)
+            AsyncStorage.setItem("cart", JSON.stringify(cart));
             this.setState({dataCart:cart})
         }
         else if (type == false&&cant>=2){
             cant = cant -1
             cart[i].quantity = cant
-            // this.removeCartItem(cant-1)
-            this.setState({dataCart:cart})
+            AsyncStorage.setItem("cart", JSON.stringify(cart));
+            this.setState({quantity:cart})
         }
         else if (type==false&&cant==1){
             cart.splice(i,1)
@@ -73,6 +71,7 @@ export default class CartView extends Component {
             <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                 <View style={{height:20}} />
                 <View style={{height:10}}/>
+
 
                 <View style={{backgroundColor:'transparent',flex:1,justifyContent:'space-between'}}>
                     <ScrollView>

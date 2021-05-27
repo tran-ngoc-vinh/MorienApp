@@ -11,9 +11,9 @@ export default class GoodListScreen extends Component {
         return(
             <View　style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                 <View >
-                    <Text>{item.GoodsName}</Text>
+                    <Text style={{fontSize:20}}>{item.GoodsName}</Text>
                 </View>
-                <TouchableOpacity style={{backgroundColor:'#4CAF50',width:200,padding:5,alignItems:"center",borderRadius:10}} onPress={()=>this.onClickCart(item)}>
+                <TouchableOpacity style={{backgroundColor:'#4CAF50',width:200,padding:5,alignItems:"center",borderRadius:10,marginTop:20}} onPress={()=>this.onClickCart(item)}>
                         <View>
                             <Text style={{color:'white',fontSize:20}}>カートに入れる</Text>
                         </View>
@@ -26,8 +26,6 @@ export default class GoodListScreen extends Component {
         const itemcart ={
             goods:data,
             quantity : 1,
-            name:data.GoodsName,
-            size:data.Size
         }
 
         AsyncStorage.getItem('cart').then((datacart)=>{
