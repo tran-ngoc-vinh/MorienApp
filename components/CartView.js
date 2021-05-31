@@ -34,10 +34,7 @@ export default class CartView extends Component {
             let cartItems = JSON.parse(cart);
             const updatedCartItems = cartItems.filter(function (e, itemIndex) { return itemIndex !== index });
             
-            await AsyncStorage.setItem('cart', JSON.stringify(updatedCartItems));
-            // await AsyncStorage.mergeItem('cart', JSON.stringify(updatedCartItems));
-            
-    
+            await AsyncStorage.setItem('cart', JSON.stringify(updatedCartItems));            
         } catch (error) {
             console.log('error: ', error);
         }
