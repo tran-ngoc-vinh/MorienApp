@@ -5,7 +5,6 @@ import{
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class GoodListScreen extends Component { 
-    state={}
     render(){
         let item =this.props.route.params;
         return(

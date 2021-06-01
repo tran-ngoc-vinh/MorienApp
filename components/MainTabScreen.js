@@ -9,6 +9,7 @@ import SiteListScreen from './SiteListScreen';
 import GoodListScreen from './GoodListScreen';
 import SiteListViewScreen from './SiteListViewScreen';
 import CartView from './CartView';
+import OrderView from './OrderView';
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -116,7 +117,7 @@ const ProductListStackScreen =({navigation})=>(
       ),
       }} />
       <ProductListStack.Screen name="CartView"component={CartView} options={{title:'カート',headerTitleAlign:'center'}} />
-      
+      <ProductListStack.Screen name="OrderView"component={OrderView} options={{title:'注文確認',headerTitleAlign:'center'}} onPress={()=>{navigation.navigate('OrderView')}} />
   </ProductListStack.Navigator>
 )
 

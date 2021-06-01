@@ -111,7 +111,7 @@ export default class CartView extends Component {
                         alignItems:'center',
                         padding:10,
                         borderRadius:5
-                    }}>
+                    }} onPress={()=>{this.props.navigation.navigate('OrderView')}} >
                     <Text style={{
                         fontSize:24,
                         fontWeight:'bold',
